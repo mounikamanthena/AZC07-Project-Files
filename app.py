@@ -4,6 +4,7 @@
 import openai
 from flask import Flask, flash, redirect, render_template, request, send_file
 import os
+from download_route import download_route
 
 # API key 
 openai.api_key = "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"
@@ -56,12 +57,11 @@ def keyword():
         return render_template('keyword.html')
 
 # Route to write the conversation into messages.txt and provide to user as download
-# TODO: Review function and variable names to adjust for multiple apps - currently only works with summariser
-@app.route('/download')
-def download():
-    with open('messages.txt', 'w') as f:
-        for message in summariser_msg:
-            f.write(f"{message['role']}: {message['content']}\n")
-            f.write("---\n")
-    path = "messages.txt"
-    return send_file(path, as_attachment=True)
+# Rewrote so it calls the download_route function and passes it the relevant variable depending on the app TODO: HTML will need to be edited to reflect routing
+@app.route('/download/summary')
+def download_summary():
+    return download_route(summariser_msg)
+
+@app.route('/download/keyword')
+def download_keywords():
+    return download_route(keyword_msg)
