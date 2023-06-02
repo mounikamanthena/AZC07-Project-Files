@@ -31,18 +31,19 @@ def homepage():
 
 
 # Summariser route
-@app.route("/summary", methods=['GET', 'POST'])
+@app.route("/interviewquestions", methods=['GET', 'POST'])
 def summary():
     if flask.request.method == 'POST':
-        message = flask.request.form['input']
+        message = flask.request.form['message']
         summariser_msg.append({"role": "user", "content": message})
+
         response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=summariser_msg)
         reply = response["choices"][0]["message"]["content"]
-        summariser_msg.append({"role": "assistant", "content": reply})
-        return flask.render_template('summary.html', reply=reply)
-    else:
-        return flask.render_template('summary.html')
 
+        summariser_msg.append({"role": "assistant", "content": reply})
+        return flask.render_template('interviewquestions.html', message=message, reply=reply)
+    else:
+        return flask.render_template('interviewquestions.html')
 
 # TODO: Example keyword route
 @app.route('/keywords', methods=['GET', 'POST'])
