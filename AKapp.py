@@ -32,17 +32,17 @@ def homepage():
 
 # For the Interview Page.
 @app.route("/interview", methods=['GET', 'POST'])
-def summary():
+def interview():
 
     if request.method == 'POST':
-        message = request.form['input']
+        message = flask.request.form['input']
         interview_msg.append({"role": "user", "content": message})
         response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=interview_msg)
         reply = response["choices"][0]["message"]["content"]
         interview_msg.append({"role": "assistant", "content": reply})
-        return render_template('interview.html', reply=reply)
+        return flask.render_template('interview.html', reply=reply)
     else:
-        return render_template('interview.html')
+        return flask.render_template('interview.html')
 
 
 # TODO: Example keyword route
@@ -50,6 +50,7 @@ def summary():
 def keyword():
     if flask.request.method == 'POST':
         message = flask.request.form['message']
+        keyword_msg.append({"role": "user", "content": message})
 
         # Define chat conversation using system, user, and message input
         conversation = [
