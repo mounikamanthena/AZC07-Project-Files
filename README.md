@@ -1,8 +1,8 @@
 # AZC07 WorkWise
 
-NOTE: WIP, feel free to add more info below!
+NOTE: WIP, feel free to add more info!
 
-Welcome to Work Wise, your ultimate resource for interview preparation! This is an interface with built in prompts and functions that uses the OpenAI API to: 
+Welcome to WorkWise, your ultimate resource for interview preparation! This is an interface with built in prompts and functions that uses the OpenAI API to: 
 - generate interview questions from a job title
 - summarise large paragraphs of text into a keyword summary
 - allow for the download of conversation history
