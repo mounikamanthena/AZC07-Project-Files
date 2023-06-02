@@ -19,9 +19,10 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 # Initialised messages variable, which is a list of dictionaries. Each dictionary is a message with two key value pairs - 'role' and 'content'
 # Currently using different variables for each app, but in the future should look into other methods like flask sessions to store data instead
 # TODO: Update prompts
-summariser_msg = [{"role": "system", "content": "Summarise the text I'm providing"}]
 
-keyword_msg = [{"role": "system", "content": "Select keywords from the text I'm providing"}]
+interview_msg = [{"role": "system", "content": "Assume that the user input is a job title and based on that job title give them five interview questions based on the job title"}]
+
+keyword_msg = [{"role": "system", "content": "Could you please summarise the user input in just a few important keywords"}]
 
 
 # Homepage: Explanation of the project
@@ -32,15 +33,15 @@ def homepage():
 
 # Summariser route
 @app.route("/interviewquestions", methods=['GET', 'POST'])
-def summary():
+def interview():
     if flask.request.method == 'POST':
         message = flask.request.form['message']
-        summariser_msg.append({"role": "user", "content": message})
+        interview_msg.append({"role": "user", "content": message})
 
-        response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=summariser_msg)
+        response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=interview_msg)
         reply = response["choices"][0]["message"]["content"]
 
-        summariser_msg.append({"role": "assistant", "content": reply})
+        interview_msg.append({"role": "assistant", "content": reply})
         return flask.render_template('interviewquestions.html', message=message, reply=reply)
     else:
         return flask.render_template('interviewquestions.html')
@@ -53,7 +54,7 @@ def keyword():
 
         # Define chat conversation using system, user, and message input
         conversation = [
-            {'role': 'system', 'content': 'You are a helpful assistant.'},
+            {'role': 'system', 'content': 'Could you please summarise the user input in just a few important keywords'},
             {'role': 'user', 'content': message}
         ]
 
@@ -75,7 +76,7 @@ def keyword():
 # Rewrote so it calls the download_route function and passes it the relevant variable depending on the app TODO: HTML will need to be edited to reflect routing
 @app.route('/download/summary')
 def download_summary():
-    return download_route(summariser_msg)
+    return download_route(interview_msg)
 
 
 @app.route('/download/keyword')
