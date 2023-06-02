@@ -1,13 +1,13 @@
-# AZC07 Project Files WIP
+# AZC07 WorkWise
 
-Created this branch to store files I'm working on for the final project.
-Intend to create template website for the project using Flask, with a Jinja2 template as base for further changes later.
+NOTE: WIP, feel free to add more info below!
 
-Added Dockerfile and compose-dev.yaml for Docker Dev Environments.
+Welcome to Work Wise, your ultimate resource for interview preparation! This is an interface with built in prompts and functions that uses the OpenAI API to: 
+- generate interview questions from a job title
+- summarise large paragraphs of text into a keyword summary
+- allow for the download of conversation history
 
-Install Docker Desktop: https://docs.docker.com/desktop/install/linux-install/
-
-Docker Dev Environment (once Docker Desktop is installed): https://open.docker.com/dashboard/dev-envs?url=git@github.com:vesyou/AZC07-Project-Files.git
+Built with Flask, Bootstrap and Python. Powered by GPT 3.5 Turbo.
 
 
 
