@@ -6,8 +6,20 @@ import openai
 from download_route import download_route
 from reset_route import reset_route
 
-# API key 
-openai.api_key = "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"
+# Check for OpenAI API key from text file: 'api_key.txt' https://platform.openai.com/account/api-keys. Still not very secure but better than having the API key hardcoded.
+# NOTE: Remember to delete or clear the api_key.txt file if code is to be shared or made public
+try:
+    with open("api_key.txt", "r") as file:
+        api_key = file.read().strip()
+
+    if not api_key:
+        raise ValueError("API key not found in the file.")
+
+    openai.api_key = api_key
+except FileNotFoundError:
+    print("File 'api_key.txt' not found. Please create an 'api_key.txt' file and add your OpenAI API key.")
+except ValueError as e:
+    print("Invalid API key: " + str(e))
 
 # Configure application
 app = flask.Flask(__name__)
