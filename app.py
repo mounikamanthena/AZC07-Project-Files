@@ -3,8 +3,8 @@
 # Flask code from CS50 project and DigitalOcean
 import flask
 import openai
-
 from download_route import download_route
+from reset_route import reset_route
 
 # API key 
 openai.api_key = "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"
@@ -18,7 +18,6 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # Initialised messages variable, which is a list of dictionaries. Each dictionary is a message with two key value pairs - 'role' and 'content'
 # Currently using different variables for each app, but in the future should look into other methods like flask sessions to store data instead
-# TODO: Update prompts
 
 interview_msg = [{"role": "system", "content": "Assume that the user input is a job title and based on that job title give them five interview questions based on the job title"}]
 
@@ -31,7 +30,7 @@ def homepage():
     return flask.render_template('home.html')
 
 
-# Summariser route
+# Interview route
 @app.route("/interviewquestions", methods=['GET', 'POST'])
 def interview():
     if flask.request.method == 'POST':
@@ -46,7 +45,8 @@ def interview():
     else:
         return flask.render_template('interviewquestions.html')
 
-# TODO: Example keyword route
+
+# Keyword route
 @app.route('/keywords', methods=['GET', 'POST'])
 def keyword():
     if flask.request.method == 'POST':
@@ -72,16 +72,30 @@ def keyword():
         return flask.render_template('keyword.html')
 
 
-# Route to write the conversation into messages.txt and provide to user as download
-# Rewrote so it calls the download_route function and passes it the relevant variable depending on the app TODO: HTML will need to be edited to reflect routing
-@app.route('/download/summary')
-def download_summary():
-    return download_route(interview_msg)
-
+# Routes to write the conversation into text files and provide to user as download
+@app.route('/download/interview')
+def download_interview():
+    download_route(interview_msg, "interview_msg.txt")
+    return flask.redirect('/interviewquestions')
 
 @app.route('/download/keyword')
 def download_keywords():
-    return download_route(keyword_msg)
+    download_route(keyword_msg, "interview_msg.txt")
+    return flask.redirect('/keyword')
+
+
+# Routes to reset variables to default prompts so conversation history is cleared
+@app.route('/reset/interview')
+def reset_interview():
+    global interview_msg
+    interview_msg = reset_route("interview_msg")
+    return flask.redirect('/interviewquestions')
+
+@app.route('/reset/keyword')
+def reset_keywords():
+    global keyword_msg
+    keyword_msg = reset_route("keyword_msg")
+    return flask.redirect('/keyword')
 
 
 if __name__ == '__main__':
