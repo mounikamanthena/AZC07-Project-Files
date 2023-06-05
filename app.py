@@ -82,6 +82,11 @@ def keyword():
         return flask.render_template('keyword.html')
 
 
+# Resources route
+@app.route('/resources', methods=['GET'])
+def resource():
+    return flask.render_template('resources.html')
+
 # Routes to write the conversation into text files and provide to user as download
 @app.route('/download/interview')
 def download_interview():
