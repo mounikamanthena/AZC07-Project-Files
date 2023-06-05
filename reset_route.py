@@ -4,7 +4,6 @@ import os
 def reset_route(messages):
     # Store name of text file before the messages var is overwritten in the next step
     filename = messages + ".txt"
-    print(filename)
 
     # Reset to default
     if messages == "interview_msg":

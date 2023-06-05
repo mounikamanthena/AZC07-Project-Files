@@ -6,5 +6,4 @@ def download_route(messages, filename):
        for message in messages:
            f.write(f"{message['role']}: {message['content']}\n")
            f.write("---\n")
-   path = filename
-   return send_file(path, as_attachment=True)
+   return 0

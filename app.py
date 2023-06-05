@@ -28,12 +28,15 @@ app.secret_key = 'very_secret_key'
 # Ensure templates are auto-reloaded when modified
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-# Initialised messages variable, which is a list of dictionaries. Each dictionary is a message with two key value pairs - 'role' and 'content'
+# NOTE: Enter prompt details below
+# Initialised separate variables for prompts so it can be easily called by other functions, and so if changes need to be made to the prompts, they can just be changed here.
+interview_prompt = "Assume that the user input is a job title and based on that job title give them five interview questions based on the job title"
+keyword_prompt = "Could you please summarise the user input in just a few important keywords"
+
+# Init variables to store message history, each a list of dictionaries. Each dictionary is a message with two key value pairs - 'role' and 'content'
 # Currently using different variables for each app, but in the future should look into other methods like flask sessions to store data instead
-
-interview_msg = [{"role": "system", "content": "Assume that the user input is a job title and based on that job title give them five interview questions based on the job title"}]
-
-keyword_msg = [{"role": "system", "content": "Could you please summarise the user input in just a few important keywords"}]
+interview_msg = [{"role": "system", "content": interview_prompt}]
+keyword_msg = [{"role": "system", "content": keyword_prompt}]
 
 
 # Homepage: Explanation of the project
@@ -63,22 +66,17 @@ def interview():
 def keyword():
     if flask.request.method == 'POST':
         message = flask.request.form['message']
-
-        # Define chat conversation using system, user, and message input
-        conversation = [
-            {'role': 'system', 'content': 'Could you please summarise the user input in just a few important keywords'},
-            {'role': 'user', 'content': message}
-        ]
+        keyword_msg.append({"role": "user", "content": message})
 
         # Make a chat completion request to OpenAI API
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=conversation,
+            messages=keyword_msg,
             max_tokens=50
         )
-
         output = response.choices[0].message.content
 
+        keyword_msg.append({"role": "assistant", "content": output})
         return flask.render_template('keyword.html', message=message, output=output)
     else:
         return flask.render_template('keyword.html')
@@ -88,12 +86,14 @@ def keyword():
 @app.route('/download/interview')
 def download_interview():
     download_route(interview_msg, "interview_msg.txt")
-    return flask.redirect('/interviewquestions')
+    path = "interview_msg.txt"
+    return flask.send_file(path, as_attachment=True)
 
 @app.route('/download/keyword')
 def download_keywords():
-    download_route(keyword_msg, "interview_msg.txt")
-    return flask.redirect('/keyword')
+    download_route(keyword_msg, "keyword_msg.txt")
+    path = "keyword_msg.txt"
+    return flask.send_file(path, as_attachment=True)
 
 
 # Routes to reset variables to default prompts so conversation history is cleared
@@ -104,10 +104,10 @@ def reset_interview():
     return flask.redirect('/interviewquestions')
 
 @app.route('/reset/keyword')
-def reset_keywords():
+def reset_keyword():
     global keyword_msg
     keyword_msg = reset_route("keyword_msg")
-    return flask.redirect('/keyword')
+    return flask.redirect('/keywords')
 
 
 if __name__ == '__main__':
