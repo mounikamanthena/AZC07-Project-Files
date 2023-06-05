@@ -21,9 +21,10 @@
             background-color: #fff;
             color: #000;
             border-color: #fff;
+           
         }
         .output {
-            height: 300px;
+            height: 400px;
             background-color: rgba(21, 20, 20, 0.2);
             color: #1d1b1b;
             border-color: #fff;
@@ -39,6 +40,17 @@
         .button{
             width: 20%;
         }
+        #rowGrid{
+            display: grid;
+            grid-template-rows: repeat(3,1fr);
+            grid-gap: 10px;
+        }
+        #columnGrid{
+            display:grid;
+            grid-template-columns: 80% 20%;
+            grid-gap: 5px;
+
+        }
     </style>
 </head>
 <body>
@@ -48,24 +60,36 @@
         
         <br><br>
         <div class="row" style="margin-bottom:16px; padding-top: 16px; ">
-            <div class="input-group col-md-6 col-auto" >
-                <form method="POST" action="/interviewquestions">
-                        <table>
-                            <tr>
-                            <td><h2>Enter your question: </h2></td>
-                            </tr>
-                            <tr>
-                            <td><input type="text" class="form-control" id="message" name="message" placeholder="Enter a message">&nbsp;&nbsp;
-                                <button type="submit" class="btn btn-light mb-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-amd" viewBox="0 0 16 16">
-                                  <path d="m.334 0 4.358 4.359h7.15v7.15l4.358 4.358V0H.334ZM.2 9.72l4.487-4.488v6.281h6.28L6.48 16H.2V9.72Z"/>
-                                </svg>
-                                </button>
-                            </td>
-                         </tr>
-                        </table>
-                </form>
+            <div class="input-group col-md-6 col-auto" id="rowGrid">
+                        <form method="POST" action="/interviewquestions">
+                            <div class="item1">
+                                
+                                    <h2>Enter the job role: </h2> 
+                            </div>
+                            <div class="item2" id="columnGrid">
+                                    <div class="itema">
+                                        <input type="text" class="form-control" id="message" name="message" placeholder="Enter a message">&nbsp;&nbsp;
+                                    </div>
+                                    <div class="itemb">
+                                        <button type="submit" class="btn btn-light mb-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-amd" viewBox="0 0 16 16">
+                                        <path d="m.334 0 4.358 4.359h7.15v7.15l4.358 4.358V0H.334ZM.2 9.72l4.487-4.488v6.281h6.28L6.48 16H.2V9.72Z"/>
+                                        </svg>
+                                        </button>
+                                    </div>
+                            </div>
+
+                            
+                        </form>
+                    
+                    <div class="item3">
+                        <!-- Export and clear history function -->
+                         <a href="/download/summary" class="btn btn-outline-info mb-5">Export</a>
+                        <a href="/clear" class="btn btn-outline-danger mb-5">Reset</a>
+                    </div>
+                
             </div>
+            
             <div class="d-none d-md-block col-md-6" >
                 {% if message %}
                     <textarea class="form-control output" readonly>{{ reply }}</textarea>

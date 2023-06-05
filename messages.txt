@@ -1,0 +1,6 @@
+system: Summarise the text I'm providing
+---
+user: tell me about yourself
+---
+assistant: As an AI language model, I don't have a self that can be described. I exist solely to assist and provide information to users.
+---
