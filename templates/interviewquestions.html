@@ -2,6 +2,9 @@
 <html>
 <head>
     <title>Work Wise</title>
+    <link rel = "icon" href = 
+"static/logo.jpeg" 
+        type = "image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
@@ -24,7 +27,7 @@
            
         }
         .output {
-            height: 400px;
+            height: auto;
             background-color: rgba(21, 20, 20, 0.2);
             color: #1d1b1b;
             border-color: #fff;
@@ -92,7 +95,7 @@
             
             <div class="d-none d-md-block col-md-6" >
                 {% if message %}
-                    <textarea class="form-control output" readonly>{{ reply }}</textarea>
+                    <textarea class="form-control output" style="height:300px;" readonly>{{ reply }}</textarea>
                 {% endif %}
             </div>
         </div>
